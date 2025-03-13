@@ -90,7 +90,7 @@ class Quiz(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     chapter_id = db.Column(db.Integer, db.ForeignKey('chapter.id'), nullable=False)
     date_of_quiz = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    duration = db.Column(db.String(10))  # HH:MM format
+    duration = db.Column(db.String(10))  
     remarks = db.Column(db.Text)
 
     questions = db.relationship('Question', backref='quiz', lazy=True)
@@ -117,7 +117,7 @@ class Question(db.Model):
     option2 = db.Column(db.String(200), nullable=False)
     option3 = db.Column(db.String(200), nullable=False)
     option4 = db.Column(db.String(200), nullable=False)
-    correct_option = db.Column(db.Integer, nullable=False)  # Stores 1, 2, 3, or 4
+    correct_option = db.Column(db.Integer, nullable=False)  
 
     def __repr__(self):
         return f'<Question {self.id} - {self.quiz.id}>'

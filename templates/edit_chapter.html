@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit chapter page</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: whitesmoke;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: blueviolet;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0c0c0c;
+        }
+        .flash{
+            color: red;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            
+        }
+        
+    </style>
+</head>
+<body>
+    <form action="{{ url_for('edit_chapter', chapter_id=chapter.id) }}" method="POST">
+
+        <h1>Edit chapter</h1>
+        
+        <label for="name">name</label>
+        <input type="text" name="name" id="name" value="{{ chapter.name }}" required>
+        <label for="description">description</label>
+        <input type="description" name="description" id="description" value="{{chapter.description}}"required>
+        <input type="submit" value="save"> 
+        <button type="button" onclick="window.location.href='/admin'">Cancel</button>       
+
+    </form>
+</body>
+</html>

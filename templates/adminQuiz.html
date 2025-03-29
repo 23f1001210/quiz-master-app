@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Quiz</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body{
+            background-image: url("../static/background.jpg");
+        }
+        .navbar {
+            background-color: blueviolet !important;
+        }
+
+        .nav-link {
+            color: white;
+        }
+
+        .nav-link:hover {
+            color: black !important;
+        }
+
+        /* Container */
+        .block {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Title */
+        .dashTitle {
+            text-align: center;
+            color: black;
+        }
+
+        /* Subjects Grid */
+        .subjectBlock {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            background-color: whitesmoke;
+        }
+
+        /* Subject Card */
+        .subjectCard {
+            background: white;
+            padding: 15px;
+            width: 40%;
+            min-width: 300px;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Subject Title */
+        .subject-Title {
+            margin: 5px 0;
+            color: black;
+        }
+
+        /* Table Styling */
+        .chapterTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .chapterTable th,
+        .chapterTable td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .chapterTable th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        /* Buttons */
+        .editBtn {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+
+        .editBtn:hover{
+            background-color: #1569ca;
+        }
+
+        .deleteBtn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 3px;
+        }
+
+        .deleteBtn:hover{
+            background-color: #d20e22;
+        }
+
+        .addChapterBtn {
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .addChapterBtn:hover{
+            background-color: #139431;
+        }
+
+        .plusBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #FFA500;
+            /* Orange */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .plusBtn:hover {
+            background-color: #4d7404;
+            /* Darker blue on hover */
+        }
+
+        .quiz {
+            color: black;
+
+        }
+
+        .btnContainer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+        }
+        .dropdown{
+            margin-right: 20px;
+            
+        }
+        #dropdownMenuButton1{
+            background-color: white !important;
+            color: black;
+        }
+        .dropdown-item:hover{
+            background-color: whitesmoke !important;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <nav class="nav">
+                <a class="nav-link active" aria-current="page" href="/admin">Home</a>
+                <a class="nav-link quiz" href="/adminQuiz">Quiz</a>
+                <a class="nav-link" href="/userList">Users</a>
+                <a class="nav-link" href="/admin_summary">Summary</a>
+                <a class="nav-link" href="/logOut">Logout</a>
+            </nav>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Search
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="/user_search">users</a></li>
+                    <li><a class="dropdown-item" href="/subject_search">subjects</a></li>
+                    <li><a class="dropdown-item" href="/quiz_search">quizs</a></li>
+                    <li><a class="dropdown-item" href="/question_search">questions</a></li>
+                </ul>
+            </div>
+            <h4 class="m-0 text-white" style="white-space: nowrap;">Welcome Admin &nbsp; &nbsp;</h4>
+        </div>
+    </nav>
+
+    <div class="block">
+        <h2 class="dashTitle"></h2>
+        <div class="flash">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <p class="flash">{{ message }}</p>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class="subjectBlock">
+            {% for quiz in quizs %}
+            <div class="subjectCard">
+                <h3 class="subject-Title">{{ quiz.chapter.name }}(quiz id: {{ quiz.id}})</h3>
+
+                <table class="chapterTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Question title</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for question in quiz.questions %}
+                        <tr>
+                            <td>{{ question.id }}</td>
+                            <td>{{ question.question_title }}</td>
+                            <td>
+                                <a href="{{ url_for('edit_question', question_id=question.id) }}">
+                                    <button class="editBtn">Edit</button>
+                                </a>
+                                <form action="{{ url_for('delete_question', question_id= question.id) }}" method="POST"
+                                    onsubmit="return confirm('Are you sure you want to delete this question?');">
+                                    <button class="deleteBtn">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{{ url_for('add_question', quiz_id=quiz.id) }}">
+                    <button class="addChapterBtn">+ Question</button>
+                </a>
+
+                <div class="btnContainer">
+                    <a href="{{ url_for('edit_quiz', quiz_id=quiz.id) }}">
+                        <button class="editBtn">Edit quiz</button>
+                    </a>
+                    <div>
+
+                        <form action="{{ url_for('delete_quiz', quiz_id=quiz.id) }}" method="POST"
+                            onsubmit="return confirm('Are you sure you want to delete this Quiz?');">
+                            <button type="submit" class="deleteBtn ">Delete quiz</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+            <div class="plus">
+                <a href="/addQuiz"><button class="button plusBtn">+ New Quiz</button></a>
+            </div>
+
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

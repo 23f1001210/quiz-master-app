@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit question page</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: whitesmoke;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: blueviolet;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0c0c0c;
+        }
+
+        .flash {
+            color: red;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+
+        }
+    </style>
+</head>
+
+<body>
+    <form action="{{ url_for('edit_question', question_id=question.id) }}" method="POST" enctype="multipart/form-data">
+
+        <h1>Edit Question</h1>
+
+        <label for="questionId"> Question ID </label>
+        <input type="text" name="questionId" id="questionId" value="{{question.id}}" required>
+        <label for="questionTitle">Question Title</label>
+        <input type="text" name="questionTitle" id="questionTitle" value="{{question.question_title}}" required>
+        <label for="questionStatement">Question Statement</label>
+        <textarea name="questionStatement" id="questionStatement" required>{{ question.question_statement }}</textarea>
+
+        {% if question.image_path %}
+        <p>Current Image:</p>
+        <img src="{{ url_for('static', filename='uploads/' + question.image_path) }}" alt="Question Image"
+            style="max-width:200px;">
+        {% endif %}
+        <label for="image">Upload New Image</label>
+        <input type="file" name="image" id="image" accept="image/*">
+        {% if question.audio_path %}
+        <p>Current Audio:</p>
+        <audio controls>
+            <source src="{{ url_for('static', filename='uploads/' + question.audio_path) }}" type="audio/mpeg">
+            Your browser does not support the audio
+        </audio>
+        {% endif %}
+        <label for="audio">Upload New Audio</label>
+        <input type="file" name="audio" id="audio" accept="audio/*">
+        <label for="option1">Option 1</label>
+        <input type="text" name="option1" id="option1" value="{{question.option1}}" required>
+        <label for="option2">Option 2</label>
+        <input type="text" name="option2" id="option2" value="{{question.option2}}" required>
+        <label for="option3">Option 3</label>
+        <input type="text" name="option3" id="option3" value="{{question.option3}}" required>
+        <label for="option4">Option 4</label>
+        <input type="text" name="option4" id="option4" value="{{question.option4}}" required>
+        <label for="correctOption">Correct option</label>
+        <input type="text" name="correctOption" id="correctOption" value="{{question.correct_option}}" required>
+        <input type="submit" value="save">
+        <button type="button" onclick="window.location.href='/adminQuiz'">Cancel</button>
+
+    </form>
+</body>
+
+</html>

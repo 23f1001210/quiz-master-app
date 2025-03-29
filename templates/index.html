@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Master</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url("../static/home.jpg");
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Arial', sans-serif;
+    }
+
+    #container {
+      background-color: white;
+      padding: 21px;
+      border-radius: 11px;
+      box-shadow: 0 0 10px;
+      text-align: center;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 11px 21px;
+      margin: 11px;
+      color: white;
+      background-color: blueviolet;
+      border: 2px solid #363636;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .button:hover {
+      color: white;
+      background-color: #3c3b3b;
+    }
+
+    .flash {
+      color: red;
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: bold;
+
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div class="flash">
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      {% for message in messages %}
+      <p class="flash">{{ message }}</p>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+    </div>
+    <h1>Welcome!</h1>
+    <h2>Quiz Master V1</h2>
+    <a href="/register" class="button">Register</a>
+    <a href="/userLogin" class="button">Login</a>
+    <a href="/adminLogin" class="button">Admin Login</a>
+  </div>
+</body>
+
+</html>

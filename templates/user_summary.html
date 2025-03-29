@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summary charts</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body{
+            background-image: url("../static/background.jpg");
+        }
+        .navbar {
+            background-color: blueviolet !important;
+        }
+
+        .nav-link {
+            color: white;
+        }
+
+        .nav-link:hover {
+            color: black !important;
+        }
+
+        .dropdown {
+            margin-right: 20px;
+
+        }
+
+        #dropdownMenuButton1 {
+            background-color: white !important;
+            color: black;
+        }
+
+        .dropdown-item:hover {
+            background-color: whitesmoke !important;
+        }
+
+        .active {
+            color: black;
+        }
+
+        .charts_container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            margin-top: 5%;
+        }
+
+        .chart_box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;            
+            justify-content: center;
+            width: 600px;
+            text-align: center;
+            background: whitesmoke;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .heading {
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <nav class="nav">
+                <a class="nav-link" aria-current="page" href="/user_dashboard">Home</a>
+                <a class="nav-link " href="/user_scores">Scores</a>
+                <a class="nav-link active" href="/user_summary">Summary</a>
+                <a class="nav-link" href="/logOut">Logout</a>
+            </nav>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Search
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="/subject_search">subject</a></li>
+                    <li><a class="dropdown-item" href="/date_search">quiz by date</a></li>
+                    <li><a class="dropdown-item" href="/score_search">scores</a></li>
+                </ul>
+            </div>
+            <h4 class="m-0 text-white" style="white-space: nowrap;"> {{user['full_name']}} &nbsp;</h4>
+        </div>
+    </nav>
+
+    <div class="charts_container">
+        <div class="chart_box">
+            <h4 class="heading">Subject Wise quiz attempts</h4>
+            <canvas id="quizAttemptsChart" height="350" width="250"></canvas>
+        </div>
+
+        <div class="chart_box">
+            <h4 class="heading">Top scores per Subject</h4>
+            <canvas id="topScoresChart"></canvas>
+        </div>
+    </div>
+
+
+    <script>
+        const ctx1 = document.getElementById('quizAttemptsChart').getContext('2d');
+
+        let subjects = JSON.parse('{{ subjects | tojson | safe }}');
+        let quiz_count = JSON.parse('{{ quiz_count | tojson | safe }}');
+
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: subjects,
+                datasets: [{
+                    label: 'quiz given',
+                    data: quiz_count,
+                    backgroundColor: ['#74c0fc', '#63e6be', '#ff8787', '#ffc078'],
+                    borderColor: '#1c7ed6',
+                    borderWidth: 2,
+                }]
+            },
+            options: {
+                responsive: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10
+                    }
+                }
+            }
+        });
+
+        const ctx2 = document.getElementById('topScoresChart').getContext('2d');
+        let scores = JSON.parse('{{ scores | tojson | safe }}');
+        
+        new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: subjects,
+                datasets: [{
+                    label: 'Top scores per subject',
+                    data: scores,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#C9CBCF', '#FF5722'],
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: false,
+                maintainAspectRatio: false
+            }
+        });
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

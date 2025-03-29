@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>search quiz</title>
+    <style>
+        body{
+            background-image: url("../static/background.jpg");
+            font-family: 'Arial', sans-serif;
+        }
+        form {
+            border-radius: 10px;
+            box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.1);
+            width: 30%;
+            background-color:white;
+            padding: 20px;
+            margin: 20px auto;
+        }
+
+
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+
+        input[type="text"] {
+            border: 1px solid #aaa;
+            width: 95%;
+            border-radius: 4px;
+            padding: 9px;
+            margin-bottom: 13px;
+
+        }
+
+
+        input[type="submit"] {
+            transition: all 0.3s ease-in-out;
+            padding: 10px 22px;
+            border-radius: 5px;
+            border: none;
+            background: #05b411;
+            color: #fff;
+            cursor: pointer;
+            margin-left: 40%;
+            margin-right: 50%;
+        }
+
+        input[type="submit"]:hover {
+            background: #04891d;
+        }
+
+
+        .heading {
+            font-weight: bold;
+            text-align: center;
+            color: #1a1a1a;
+            background: #dcdcdc;
+            padding: 12px;
+            width: 320px;
+            margin-left: auto;
+            border-radius: 6px;
+            margin-top: 50px;
+            margin-right: auto;
+        }
+
+
+        ul {
+            padding: 20px;
+            width: 46%;
+            box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color:white;
+            margin-top: 30px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            border-radius: 5px;
+            background: #f7f7f7;
+            box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.1);
+            padding: 14px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+        }        
+
+        .cancel {
+            margin-left: 43%;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flash">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="flash">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <h2 class="heading">Search Quiz by Date </h2>
+    <form method="POST" action="{{ url_for('date_search') }}">
+        {{ form.csrf_token }}
+        <label for="date">date of quiz :(YYYY-MM-DD)</label>
+        {{ form.date }}
+        <br>
+        {{ form.submit }}
+        <h3>
+            <div class="cancel"><a href="/user_dashboard">cancel</a></div>
+        </h3>
+    </form>
+
+    {% if quizs %}
+    <h2 class="heading">Search Results</h2>
+    <ul>
+        {% for quiz in quizs %}
+        <li>
+            <div>QuizID: {{quiz.id}} | Date: {{ quiz.date_of_quiz.strftime('%Y-%m-%d') }} | Duration: {{ quiz.duration
+                }} | remarks:
+                {{quiz.remarks}} </div>
+        </li>
+        
+        {% endfor %}
+    </ul>
+
+    {% endif %}
+
+
+</body>
+
+</html>

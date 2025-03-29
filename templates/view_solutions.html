@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Soultions</title>
+    <style>
+        body {
+            background-image: url(../static/background.jpg);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: wheat;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .heading {
+            text-align: center;
+            font-size: xx-large;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-decoration: underline;
+        }
+
+        * {
+            font-size: large;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1><a href="{{ url_for('user_scores') }}" style="font-size: larger;">
+                < Go back</a>
+        </h1>
+
+        <div class="heading">
+            Solutions for Quiz ID: {{ quiz.id }}
+        </div>
+        <div>
+
+            {% for question in questions %}
+            {{ loop.index}})
+            {{ question.question_title }}
+            {{ question.question_statement }}
+            {% if question.image_path %}
+            <div>
+                <img src="{{ url_for('static', filename='uploads/' + question.image_path) }}" alt="Question Image"
+                    style="max-width:500px; max-height: 420px; margin-top: 10px;">
+            </div>
+            {% endif %}
+            {% if question.audio_path %}
+            <div style="margin: 10px;">
+                <audio controls>
+                    <source src="{{ url_for('static', filename='uploads/' + question.audio_path) }}" type="audio/mpeg">
+                    Your browser does not support the audio
+                </audio>
+            </div>
+            {% endif %}
+            <ul>
+                <li>1) {{ question.option1 }}</li>
+                <li>2) {{ question.option2 }}</li>
+                <li>3) {{ question.option3 }}</li>
+                <li>4) {{ question.option4 }}</li>
+            </ul>
+            <p>✅ correct option: {{ question.correct_option }}</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>
